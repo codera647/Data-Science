@@ -1,0 +1,23 @@
+import pandas as pd
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load dataset
+data = pd.read_csv('customer_data.csv')
+
+# Features
+X = data[['annual_income', 'spending_score']]
+
+# K-Means clustering
+kmeans = KMeans(n_clusters=5, random_state=42)
+data['cluster'] = kmeans.fit_predict(X)
+
+# Visualization
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x='annual_income', y='spending_score', hue='cluster', data=data, palette='viridis')
+plt.title('Customer Segmentation')
+plt.show()
+
+# Save model
+joblib.dump(kmeans, 'customer_segmentation_model.pkl')
